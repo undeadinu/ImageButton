@@ -69,7 +69,7 @@ extension NSImage {
         
         result.lockFocus()
         color.set()
-        NSRectFillUsingOperation(imageRect, NSCompositingOperation.CompositeSourceAtop)
+        NSRectFillUsingOperation(imageRect, NSCompositingOperation.SourceAtop)
         result.unlockFocus()
         
         return result
@@ -78,7 +78,7 @@ extension NSImage {
     func crop (rect: NSRect) -> NSImage {
         let result = NSImage(size: rect.size)
         result.lockFocus()
-        self.drawInRect(NSRect(origin: NSPoint(), size: rect.size), fromRect: rect, operation: .CompositeSourceOver, fraction: 1, respectFlipped: true, hints: nil)
+        self.drawInRect(NSRect(origin: NSPoint(), size: rect.size), fromRect: rect, operation: .SourceOver, fraction: 1, respectFlipped: true, hints: nil)
         result.unlockFocus()
         return result
 

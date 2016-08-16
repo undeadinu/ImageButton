@@ -53,7 +53,7 @@ extension NSImage {
 
         let result = NSImage(size: srcRect.size)
         result.lockFocus()
-        self.drawInRect(destRect, fromRect: srcRect, operation: .CompositeSourceOver, fraction: 1, respectFlipped: true, hints: nil)
+        self.drawInRect(destRect, fromRect: srcRect, operation: .SourceOver, fraction: 1, respectFlipped: true, hints: nil)
         result.unlockFocus()
         return result
     }

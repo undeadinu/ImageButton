@@ -75,7 +75,7 @@ public class ImageButton: NSView {
     }
     
     public override var intrinsicContentSize: NSSize {
-        return (self.images != nil) ? self.images!.defaultImage!.size : NSSize(width: NSViewNoInstrinsicMetric, height: NSViewNoInstrinsicMetric)
+        return (self.images != nil) ? self.images!.defaultImage!.size : NSSize(width: NSViewNoIntrinsicMetric, height: NSViewNoIntrinsicMetric)
     }
     
     // MARK: Mouse
@@ -137,7 +137,7 @@ public class ImageButton: NSView {
         }
         
         let image = self.imageByState(self.state())
-        image?.drawAtPoint(NSPoint(), fromRect: NSZeroRect, operation: NSCompositingOperation.CompositeSourceOver, fraction: 1)
+        image?.drawAtPoint(NSPoint(), fromRect: NSZeroRect, operation: NSCompositingOperation.SourceOver, fraction: 1)
     }
 
     private func state() -> ImageButtonState {

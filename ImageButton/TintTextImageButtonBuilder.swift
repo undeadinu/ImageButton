@@ -36,7 +36,7 @@ public class TintTextImageButtonBuilder {
         let templateImage = NSImage(size: NSMakeSize(width , height))
         templateImage.lockFocus()
         
-        image.drawAtPoint(imagePoint, fromRect: NSZeroRect, operation: NSCompositingOperation.CompositeSourceOver, fraction: 1)
+        image.drawAtPoint(imagePoint, fromRect: NSZeroRect, operation: NSCompositingOperation.SourceOver, fraction: 1)
         (text as NSString).drawAtPoint(textPoint, withAttributes: self.textAttributes())
         templateImage.unlockFocus()
         
