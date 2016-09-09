@@ -75,7 +75,11 @@ public class ImageButton: NSView {
     }
     
     public override var intrinsicContentSize: NSSize {
-        return (self.images != nil) ? self.images!.defaultImage!.size : NSSize(width: NSViewNoIntrinsicMetric, height: NSViewNoIntrinsicMetric)
+        if #available(OSXApplicationExtension 10.11, *) {
+            return (self.images != nil) ? self.images!.defaultImage!.size : NSSize(width: NSViewNoIntrinsicMetric, height: NSViewNoIntrinsicMetric)
+        } else {
+            return (self.images != nil) ? self.images!.defaultImage!.size : NSSize()
+        }
     }
     
     // MARK: Mouse
