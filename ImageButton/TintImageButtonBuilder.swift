@@ -9,18 +9,18 @@
 import AppKit
 
 
-public class TintImageButtonBuilder {
+open class TintImageButtonBuilder {
     
-    public var defaultColor: NSColor = NSColor.blackColor()
-    public var overColor: NSColor = NSColor.yellowColor()
-    public var pressedColor: NSColor = NSColor.redColor()
-    public var disabledColor: NSColor = NSColor.grayColor()
+    open var defaultColor: NSColor = NSColor.black
+    open var overColor: NSColor = NSColor.yellow
+    open var pressedColor: NSColor = NSColor.red
+    open var disabledColor: NSColor = NSColor.gray
     
     public init() {
         
     }
 
-    public func buildImagesForImage(image: NSImage, size: NSSize? = nil) -> ImageButtonImages {
+    open func buildImagesForImage(_ image: NSImage, size: NSSize? = nil) -> ImageButtonImages {
         let imageRect = NSRect(origin: NSPoint(), size: image.size)
         let imageCrop = imageRect.rectForSizeInTheMiddle(size ?? image.size)
         let result = ImageButtonImages()
@@ -51,7 +51,7 @@ extension ImageButton {
         self.init(images: imageBuilder.buildImagesForImage(image, size:size))
     }
     
-    public func setImages(image: NSImage, colorScheme: ImageButtonColorScheme, size: NSSize? = nil) {
+    public func setImages(_ image: NSImage, colorScheme: ImageButtonColorScheme, size: NSSize? = nil) {
         let imageBuilder = TintImageButtonBuilder()
         imageBuilder.defaultColor = colorScheme.defaultColor
         imageBuilder.overColor = colorScheme.overColor
@@ -63,22 +63,22 @@ extension ImageButton {
 
 extension NSImage {
     
-    func imageWithTint(color: NSColor) -> NSImage {
+    func imageWithTint(_ color: NSColor) -> NSImage {
         let result: NSImage = self.copy() as! NSImage
         let imageRect = NSRect(origin: CGPoint(), size: result.size)
         
         result.lockFocus()
         color.set()
-        NSRectFillUsingOperation(imageRect, NSCompositingOperation.SourceAtop)
+        NSRectFillUsingOperation(imageRect, NSCompositingOperation.sourceAtop)
         result.unlockFocus()
         
         return result
     }
     
-    func crop (rect: NSRect) -> NSImage {
+    func crop (_ rect: NSRect) -> NSImage {
         let result = NSImage(size: rect.size)
         result.lockFocus()
-        self.drawInRect(NSRect(origin: NSPoint(), size: rect.size), fromRect: rect, operation: .SourceOver, fraction: 1, respectFlipped: true, hints: nil)
+        self.draw(in: NSRect(origin: NSPoint(), size: rect.size), from: rect, operation: .sourceOver, fraction: 1, respectFlipped: true, hints: nil)
         result.unlockFocus()
         return result
 
@@ -87,7 +87,7 @@ extension NSImage {
 
 extension NSRect {
     
-    func rectForSizeInTheMiddle (size: NSSize) -> NSRect {
+    func rectForSizeInTheMiddle (_ size: NSSize) -> NSRect {
         let x = self.origin.x + self.size.width / 2 - size.width / 2
         let y = self.origin.y + self.size.height / 2 - size.height / 2
         return NSRect(origin: NSPoint(x: x, y: y), size: size)

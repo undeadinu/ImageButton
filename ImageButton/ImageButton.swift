@@ -10,32 +10,32 @@ import Foundation
 import AppKit
 
 @objc
-public class ImageButton: NSView {
+open class ImageButton: NSView {
     
-    public var images: ImageButtonImages? {
+    open var images: ImageButtonImages? {
         didSet {
             self.invalidateIntrinsicContentSize()
             self.needsDisplay = true
         }
     }
     
-    public var delegate: ImageButtonDelegate?
-    public var action: Optional<() -> ()>
-    public var enabled: Bool = true {
+    open var delegate: ImageButtonDelegate?
+    open var action: Optional<() -> ()>
+    open var enabled: Bool = true {
         didSet {
             self.needsDisplay = true
         }
     }
 
-    public var mouseOver = false
-    public var pressed = false
-    public var debug = false {
+    open var mouseOver = false
+    open var pressed = false
+    open var debug = false {
         didSet {
             needsDisplay = true
         }
     }
 
-    private var trackedArea: NSTrackingArea?
+    fileprivate var trackedArea: NSTrackingArea?
 
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
@@ -53,28 +53,28 @@ public class ImageButton: NSView {
         self.postInit()
     }
     
-    private func postInit() {
+    fileprivate func postInit() {
         self.translatesAutoresizingMaskIntoConstraints = false;
-        self.setContentCompressionResistancePriority(1000, forOrientation: .Horizontal)
-        self.setContentCompressionResistancePriority(1000, forOrientation: .Vertical)
-        self.setContentHuggingPriority(1000, forOrientation: .Horizontal)
-        self.setContentHuggingPriority(1000, forOrientation: .Vertical)
+        self.setContentCompressionResistancePriority(1000, for: .horizontal)
+        self.setContentCompressionResistancePriority(1000, for: .vertical)
+        self.setContentHuggingPriority(1000, for: .horizontal)
+        self.setContentHuggingPriority(1000, for: .vertical)
     }
     
-    public override func updateTrackingAreas() {
+    open override func updateTrackingAreas() {
         if let trackingArea = self.trackedArea {
             self.removeTrackingArea(trackingArea)
         }
         
-        self.trackedArea = NSTrackingArea(rect: self.bounds, options: [.MouseEnteredAndExited, .ActiveAlways, .EnabledDuringMouseDrag], owner: self, userInfo: nil)
+        self.trackedArea = NSTrackingArea(rect: self.bounds, options: [.mouseEnteredAndExited, .activeAlways, .enabledDuringMouseDrag], owner: self, userInfo: nil)
         self.addTrackingArea(self.trackedArea!)
     }
     
-    override public func resetCursorRects() {
-        self.addCursorRect(self.bounds, cursor: NSCursor.pointingHandCursor())
+    override open func resetCursorRects() {
+        self.addCursorRect(self.bounds, cursor: NSCursor.pointingHand())
     }
     
-    public override var intrinsicContentSize: NSSize {
+    open override var intrinsicContentSize: NSSize {
         if #available(OSXApplicationExtension 10.11, *) {
             return (self.images != nil) ? self.images!.defaultImage!.size : NSSize(width: NSViewNoIntrinsicMetric, height: NSViewNoIntrinsicMetric)
         } else {
@@ -84,7 +84,7 @@ public class ImageButton: NSView {
     
     // MARK: Mouse
     
-    override public func mouseEntered(theEvent: NSEvent) {
+    override open func mouseEntered(with theEvent: NSEvent) {
         self.mouseOver = true
         self.needsDisplay = true
         if self.enabled {
@@ -92,7 +92,7 @@ public class ImageButton: NSView {
         }
     }
     
-    override public func mouseExited(theEvent: NSEvent) {
+    override open func mouseExited(with theEvent: NSEvent) {
         self.mouseOver = false
         self.needsDisplay = true
         if self.enabled {
@@ -100,12 +100,12 @@ public class ImageButton: NSView {
         }
     }
     
-    override public func mouseDown(theEvent: NSEvent) {
+    override open func mouseDown(with theEvent: NSEvent) {
         self.pressed = true
         self.needsDisplay = true
     }
     
-    override public func mouseUp(theEvent: NSEvent) {
+    override open func mouseUp(with theEvent: NSEvent) {
         
         if !self.enabled {
             return
@@ -121,19 +121,19 @@ public class ImageButton: NSView {
         self.needsDisplay = true
     }
     
-    override public func drawRect(dirtyRect: NSRect) {
+    override open func draw(_ dirtyRect: NSRect) {
         
         if debug {
             
-            var color = NSColor.yellowColor()
+            var color = NSColor.yellow
             
             switch state() {
-            case .Over:
-                color = NSColor.greenColor()
-            case .Pressed:
-                color = NSColor.redColor()
+            case .over:
+                color = NSColor.green
+            case .pressed:
+                color = NSColor.red
             default:
-                color = NSColor.yellowColor()
+                color = NSColor.yellow
             }
             
             color.setFill()
@@ -141,36 +141,36 @@ public class ImageButton: NSView {
         }
         
         let image = self.imageByState(self.state())
-        image?.drawAtPoint(NSPoint(), fromRect: NSZeroRect, operation: NSCompositingOperation.SourceOver, fraction: 1)
+        image?.draw(at: NSPoint(), from: NSZeroRect, operation: NSCompositingOperation.sourceOver, fraction: 1)
     }
 
-    private func state() -> ImageButtonState {
-        var state = ImageButtonState.Default
+    fileprivate func state() -> ImageButtonState {
+        var state = ImageButtonState.default
         
         if (!self.enabled) {
-            state = ImageButtonState.Disabled
+            state = ImageButtonState.disabled
         } else {
             
             if (self.mouseOver) {
-                state = ImageButtonState.Over
+                state = ImageButtonState.over
                 if (self.pressed) {
-                    state = ImageButtonState.Pressed
+                    state = ImageButtonState.pressed
                 }
             }
         }
         return state
     }
     
-    private func imageByState(state: ImageButtonState) -> NSImage? {
+    fileprivate func imageByState(_ state: ImageButtonState) -> NSImage? {
         let image: NSImage?
         switch state {
-        case .Default:
+        case .default:
             image = self.images?.defaultImage
-        case .Over:
+        case .over:
             image = self.images?.overImage
-        case .Pressed:
+        case .pressed:
             image = self.images?.pressedImage
-        case .Disabled:
+        case .disabled:
             image = self.images?.disabledImage
         }
         return image
@@ -180,24 +180,24 @@ public class ImageButton: NSView {
 
 @objc
 public protocol ImageButtonDelegate {
-    func imageButtonMouseEnter(button: ImageButton)
-    func imageButtonMouseExit(button: ImageButton)
+    func imageButtonMouseEnter(_ button: ImageButton)
+    func imageButtonMouseExit(_ button: ImageButton)
 }
 
 
-public class ImageButtonImages {
-    public var defaultImage, overImage, pressedImage, disabledImage: NSImage?
+open class ImageButtonImages {
+    open var defaultImage, overImage, pressedImage, disabledImage: NSImage?
 }
 
 @objc
 public protocol ImageButtonPresentation {
-    func drawForButtonState(buttonState: ImageButtonState, dirtyRect: NSRect)
+    func drawForButtonState(_ buttonState: ImageButtonState, dirtyRect: NSRect)
     func intrinsicContentSize()->NSSize
 }
 
 @objc
 public enum ImageButtonState: Int {
-    case Default, Over, Pressed, Disabled
+    case `default`, over, pressed, disabled
 }
 
 

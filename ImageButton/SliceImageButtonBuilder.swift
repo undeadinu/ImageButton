@@ -9,7 +9,7 @@
 import AppKit
 
 
-public class SliceImageButtonBuilder {
+open class SliceImageButtonBuilder {
     
     var buttonSize: NSSize?
     var sliceWidth: CGFloat?
@@ -19,7 +19,7 @@ public class SliceImageButtonBuilder {
         self.sliceWidth = sliceWidth
     }
     
-    public func buildImagesForImage(image: NSImage) -> ImageButtonImages {
+    open func buildImagesForImage(_ image: NSImage) -> ImageButtonImages {
         let finalButtonSize = buttonSize ?? NSSize(width: image.size.width, height: image.size.height)
         let finalSiceWidth = sliceWidth ?? image.size.height
         
@@ -41,7 +41,7 @@ public extension ImageButton {
 }
 
 extension NSImage {
-    func imageSlice(slice: Int, size:NSSize, sliceWidth:CGFloat) -> NSImage {
+    func imageSlice(_ slice: Int, size:NSSize, sliceWidth:CGFloat) -> NSImage {
         let imageHeight = self.size.height
         var srcRect = NSMakeRect(sliceWidth * CGFloat(slice), 0, sliceWidth, imageHeight)
         
@@ -53,7 +53,7 @@ extension NSImage {
 
         let result = NSImage(size: srcRect.size)
         result.lockFocus()
-        self.drawInRect(destRect, fromRect: srcRect, operation: .SourceOver, fraction: 1, respectFlipped: true, hints: nil)
+        self.draw(in: destRect, from: srcRect, operation: .sourceOver, fraction: 1, respectFlipped: true, hints: nil)
         result.unlockFocus()
         return result
     }

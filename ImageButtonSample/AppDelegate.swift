@@ -18,7 +18,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var tintTextImageButton: ImageButton!
     @IBOutlet weak var window: NSWindow!
 
-    func applicationDidFinishLaunching(aNotification: NSNotification) {
+    func applicationDidFinishLaunching(_ aNotification: Notification) {
         let sliceImageBuilder = SliceImageButtonBuilder(buttonSize: NSMakeSize(40, 40), sliceWidth: 40)
         self.slicedImageButton.images = sliceImageBuilder.buildImagesForImage(NSImage(named: "slices")!)
         

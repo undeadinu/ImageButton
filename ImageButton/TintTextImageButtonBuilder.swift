@@ -9,24 +9,24 @@
 import AppKit
 
 
-public class TintTextImageButtonBuilder {
+open class TintTextImageButtonBuilder {
     
-    public var height: CGFloat
+    open var height: CGFloat
     
-    public var defaultColor: NSColor = NSColor.blackColor()
-    public var overColor: NSColor = NSColor.yellowColor()
-    public var pressedColor: NSColor = NSColor.redColor()
-    public var disabledColor: NSColor = NSColor.grayColor()
+    open var defaultColor: NSColor = NSColor.black
+    open var overColor: NSColor = NSColor.yellow
+    open var pressedColor: NSColor = NSColor.red
+    open var disabledColor: NSColor = NSColor.gray
     
-    public var font = NSFont(name: "Helvetica Neue", size: 13)
-    public var textXOffset = CGFloat(0.0)
-    public var textYOffset = CGFloat(0.0)
+    open var font = NSFont(name: "Helvetica Neue", size: 13)
+    open var textXOffset = CGFloat(0.0)
+    open var textYOffset = CGFloat(0.0)
 
     public init(height: CGFloat) {
         self.height = height
     }
     
-    public func buildImagesWithImage(image: NSImage, text: String) -> ImageButtonImages {
+    open func buildImagesWithImage(_ image: NSImage, text: String) -> ImageButtonImages {
         let textSize = self.textSize(text)
         let width = image.size.width + self.textXOffset + textSize.width;
         let midY = self.height / 2
@@ -36,8 +36,8 @@ public class TintTextImageButtonBuilder {
         let templateImage = NSImage(size: NSMakeSize(width , height))
         templateImage.lockFocus()
         
-        image.drawAtPoint(imagePoint, fromRect: NSZeroRect, operation: NSCompositingOperation.SourceOver, fraction: 1)
-        (text as NSString).drawAtPoint(textPoint, withAttributes: self.textAttributes())
+        image.draw(at: imagePoint, from: NSZeroRect, operation: NSCompositingOperation.sourceOver, fraction: 1)
+        (text as NSString).draw(at: textPoint, withAttributes: self.textAttributes())
         templateImage.unlockFocus()
         
         let result = ImageButtonImages()
@@ -48,7 +48,7 @@ public class TintTextImageButtonBuilder {
         return result
     }
     
-    private func textAttributes(color: NSColor? = nil) -> [String : AnyObject] {
+    fileprivate func textAttributes(_ color: NSColor? = nil) -> [String : AnyObject] {
         var result = [String : AnyObject]()
         result[NSFontAttributeName] = self.font!
         if color != nil {
@@ -58,9 +58,9 @@ public class TintTextImageButtonBuilder {
         return result
     }
     
-    private func textSize(text: String) -> NSSize {
+    fileprivate func textSize(_ text: String) -> NSSize {
         let string = text as NSString
-        let size = string.sizeWithAttributes(self.textAttributes())
+        let size = string.size(withAttributes: self.textAttributes())
         return size
     }
 
